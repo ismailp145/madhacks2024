@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useCallback } from 'react'
+import SpeechSynthesisComponent from './SpeechSynthesisComponent'
 
 export default function HomePage() {
   const [url, setUrl] = useState('')
@@ -55,6 +56,9 @@ export default function HomePage() {
             </button>
           </div>
         </div>
+        
+        {/* Include the Speech Synthesis Component */}
+        <SpeechSynthesisComponent />
       </div>
     </div>
   )
