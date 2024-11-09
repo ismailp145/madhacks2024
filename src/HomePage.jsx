@@ -12,6 +12,7 @@ export default function HomePage() {
   }, [])
 
   const handleReadArticle = () => {
+    fetchData();
     console.log('Reading article:', url)
   }
 
@@ -19,20 +20,17 @@ export default function HomePage() {
     console.log('Generating podcast for:', url)
   }
 
-  const [data, setData] = useState(null);
-useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('https://madhacks2024-api.vercel.app');
-        const data = await response.json();
-        setData(data.message);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
+const [data, setData] = useState(null);
+  const fetchData = async () => {
+    try {
+      const response = await fetch('https://madhacks2024-api.vercel.app/scrape?url=India');
+      const d = await response.json();
+      setData(d.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+console.log(data);
 
 
 
