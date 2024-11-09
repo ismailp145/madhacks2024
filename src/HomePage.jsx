@@ -23,7 +23,7 @@ export default function HomePage() {
 useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://www.madhacks2024-api.vercel.app/api/');
+        const response = await fetch('https://madhacks2024-api.vercel.app');
         const data = await response.json();
         setData(data.message);
       } catch (error) {
