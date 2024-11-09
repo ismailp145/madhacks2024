@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useCallback } from 'react'
+import { useEffect } from 'react'
 
 export default function HomePage() {
   const [url, setUrl] = useState('')
@@ -17,6 +18,32 @@ export default function HomePage() {
   const handleGeneratePodcast = () => {
     console.log('Generating podcast for:', url)
   }
+
+  const [data, setData] = useState(null);
+useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://www.madhacks2024-api.vercel.app/');
+        const data = await response.json();
+        setData(data.message);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+/**
+ * url --> 
+ * 
+ * --->bs4 method
+ * 
+ * 
+ * 
+ */
+ 
+
 
   return (
     <div 
@@ -50,7 +77,12 @@ export default function HomePage() {
             <button onClick={handleReadArticle} className="button read">
               Read the Article
             </button>
-            <button onClick={handleGeneratePodcast} className="button podcast">
+            <button 
+            onClick={handleGeneratePodcast} 
+            className="button podcast"
+
+            // setData
+            >
               Generate a Podcast
             </button>
           </div>
