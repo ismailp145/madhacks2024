@@ -12,28 +12,53 @@ export default function HomePage() {
   }, [])
 
   const handleReadArticle = () => {
+    fetchData()
     console.log('Reading article:', url)
   }
 
   const handleGeneratePodcast = () => {
+    fetchData()
     console.log('Generating podcast for:', url)
   }
 
+// const handleReadArticle = async () => {
+//     try {
+//       const response = await fetch('http://localhost:5000/scrape', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ url }),
+//       })
+//       const data = await response.json()
+//       if (data.error) {
+//         console.error(data.error)
+//       } else {
+//         setArticleData(data)
+//         console.log('Article data:', data)
+//       }
+//     } catch (error) {
+//       console.error('Error fetching article:', error)
+//     }
+//   }
+
+//   const handleGeneratePodcast = () => {
+//     console.log('Generating podcast for:', url)
+//   }
+  
+
   const [data, setData] = useState(null);
-useEffect(() => {
-    const fetchData = async () => {
+
+const fetchData = async () => {
       try {
-        const response = await fetch('https://www.madhacks2024-api.vercel.app/api/');
-        const data = await response.json();
-        setData(data.message);
+        const response = await fetch('https://madhacks2024-api.vercel.app/scrape?subject=India');
+        const d = await response.json();
+        console.log(d.data);
+        setData(d);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
-    fetchData();
-  }, []);
-
 
 
 /**
