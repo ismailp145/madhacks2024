@@ -1,5 +1,5 @@
-import Scraper
-import Slave
+import backendFramework.example.Scraper as Scraper
+import backendFramework.example.Slave as Slave
 import numpy as np
 import matplotlib.pyplot as plt
 import time
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     uarr = Scraper.startScraping(subject, result)
     end = time.time()
     print("Time taken to scrape",subject,": ", round(end-start, 3),"seconds")
-    
+
     start = time.time()
     #Extracting number of links from each page
     output = Slave.main(uarr)
