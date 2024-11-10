@@ -28,50 +28,14 @@ export default function HomePage() {
     };
 
   const handleReadArticle = () => {
-    fetchData(url);  // Pass the current URL state to fetchData
-
     console.log('Reading article:', url)
-      navigate('/displayArticle');
-    // window.location.href = `/displayPage?title=Article Title&content=${
-    //   data || "No content found"
-    // }`;
-    
+    navigate('/displayArticle'); 
   }
 
   const handleGeneratePodcast = () => {
-    fetchPrompt(url); // Pass the current URL state to fetchData
     console.log("Generating podcast for:", url);
     navigate('/displayPodcast'); 
-
   }
-
-  
-  const fetchData = async (subject) => {
-    try {
-      const response = await fetch(`https://madhacks2024-api.vercel.app/scrape?subject=${subject}`);
-      const d = await response.json();
-      console.log('Data:', d);
-      setData(d.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-
-  const fetchPrompt = async (subject) => {
-    try {
-      const response = await fetch(
-        `https://madhacks2024-api.vercel.app/prompt?x=${subject}`
-      );
-      const d = await response.json();
-      console.log("Data:", d);
-      setData(d);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-
-
 
   const slowFactor = 8; // Adjust this value to make the movement slower
 
@@ -115,25 +79,16 @@ export default function HomePage() {
           Simply paste the URL of the article you'd like to listen to and let
           Pod-Studious do the rest.
         </p>
-        {/* <div className="input-container">
-          <input
-            type="url"
-            placeholder="Enter article URL"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            className="input"
-          /> */}
         <div className="button-container">
           <button onClick={handleReadArticle} className="button read">
-            Read the Article"
+            Read the Article
           </button>
-
           <button onClick={handleGeneratePodcast} className="button podcast">
             Generate a Podcast
           </button>
         </div>
       </div>
     </div>
-    // </div>
+
   );
 }
