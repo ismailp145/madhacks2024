@@ -56,8 +56,6 @@ export default function HomePage() {
             </button>
           </div>
         </div>
-        
-        {/* Include the Speech Synthesis Component */}
         <SpeechSynthesisComponent />
       </div>
     </div>
