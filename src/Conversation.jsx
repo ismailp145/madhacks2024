@@ -37,6 +37,7 @@ export default function Conversation() {
 
   const fetchPrompt = async (subject) => {
     try {
+      console.log("Fetching data for:", subject);
       const response = await fetch(`https://madhacks2024-api.vercel.app/conv?n=${subject}`);
       const d = await response.json();
       console.log("Data:", d);
@@ -58,7 +59,11 @@ export default function Conversation() {
     }
   };
 
-  const stopListening = () => {
+  useEffect(() => {
+    fetchPrompt(transcript);
+  }, [transcript]);
+
+  const stopListening = async () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
       setIsListening(false);
