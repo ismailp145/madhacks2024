@@ -12,7 +12,7 @@ export default function HomePage() {
   }, [])
 
   const handleReadArticle = () => {
-    fetchData();
+    fetchData(url);
     console.log('Reading article:', url)
   }
 
@@ -21,9 +21,9 @@ export default function HomePage() {
   }
 
 const [data, setData] = useState(null);
-const fetchData = async () => {
+const fetchData = async (subject) => {
   try {
-    const response = await fetch('https://madhacks2024-api.vercel.app/scrape?subject=India');
+    const response = await fetch(`https://madhacks2024-api.vercel.app/scrape?subject=${subject}`);
     const d = await response.json();
     console.log('Data:', d);
     setData(d.data);
