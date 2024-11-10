@@ -2,13 +2,14 @@
 
 import React, { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import SpeechSynthesisComponent from "./SpeechSynthesisComponent";
 
 export default function DisplayPodcast() {
   const [url, setUrl] = useState("");
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [dots, setDots] = useState([]);
+  const [podcastContent, setPodcastContent] = useState("Welcome to the Podcast!");
   const navigate = useNavigate();
-  const [data, setData] = useState(null);
 
   useEffect(() => {
     const initialDots = [...Array(200)].map(() => ({
@@ -38,7 +39,7 @@ export default function DisplayPodcast() {
       );
       const d = await response.json();
       console.log("Data:", d);
-      setData(d);
+      setPodcastContent(JSON.stringify(d.response) || "Content not available");
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -51,8 +52,8 @@ export default function DisplayPodcast() {
       <div className="background">
         {dots.map((dot, i) => {
           const { left, top } = dot;
-          const centerX = 50; // Center of the screen in percentage
-          const centerY = 50; // Center of the screen in percentage
+          const centerX = 50;
+          const centerY = 50;
           const distanceX = left - centerX;
           const distanceY = top - centerY;
           const distance = Math.sqrt(
@@ -98,6 +99,10 @@ export default function DisplayPodcast() {
               Go Back
             </button>
           </div>
+          
+          {/* Speech Synthesis Component */}
+          <SpeechSynthesisComponent text={podcastContent} />
+          
         </div>
       </div>
     </div>

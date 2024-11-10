@@ -1,18 +1,22 @@
-import React, { useState } from 'react'
-import useSpeechSynthesis from './useSpeechSynthesis'
+import React, { useState, useEffect } from 'react';
+import useSpeechSynthesis from './useSpeechSynthesis';
 
-const SpeechSynthesisComponent = () => {
-  const [text, setText] = useState("Welcome to the Article Reader!")
-  const [selectedVoice, setSelectedVoice] = useState(null)
-  const { supported, speak, speaking, cancel, voices } = useSpeechSynthesis()
+const SpeechSynthesisComponent = ({ text }) => {
+  const [selectedVoice, setSelectedVoice] = useState(null);
+  const [displayText, setDisplayText] = useState(text || "Welcome to the Article Reader!");
+  const { supported, speak, speaking, cancel, voices } = useSpeechSynthesis();
+
+  useEffect(() => {
+    setDisplayText(text); // Update displayText when the prop text changes
+  }, [text]);
 
   const handleSpeak = () => {
-    if (text && selectedVoice) {
-      speak({ text, voice: selectedVoice })
+    if (displayText && selectedVoice) {
+      speak({ text: displayText, voice: selectedVoice });
     } else {
-      speak({ text })
+      speak({ text: displayText });
     }
-  }
+  };
 
   return (
     <div className="speech-synthesis">
@@ -20,8 +24,8 @@ const SpeechSynthesisComponent = () => {
       {supported ? (
         <>
           <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
+            value={displayText}
+            onChange={(e) => setDisplayText(e.target.value)}
             placeholder="Type something to speak"
             rows="4"
             cols="50"
@@ -30,7 +34,9 @@ const SpeechSynthesisComponent = () => {
             <label htmlFor="voices">Select Voice: </label>
             <select
               id="voices"
-              onChange={(e) => setSelectedVoice(voices.find((voice) => voice.name === e.target.value))}
+              onChange={(e) =>
+                setSelectedVoice(voices.find((voice) => voice.name === e.target.value))
+              }
             >
               <option value="">Default Voice</option>
               {voices.map((voice, index) => (
@@ -51,7 +57,7 @@ const SpeechSynthesisComponent = () => {
         <p>Your browser does not support Speech Synthesis.</p>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default SpeechSynthesisComponent
+export default SpeechSynthesisComponent;
