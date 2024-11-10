@@ -47,18 +47,6 @@ export default function DisplayArticle() {
     navigate("/");  
   };
 
-  const fetchPrompt = async (subject) => {
-    try {
-      const response = await fetch(
-        `https://madhacks2024-api.vercel.app/prompt?x=${subject}`
-      );
-      const d = await response.json();
-      console.log("Data:", d);
-      setData(d);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   const slowFactor = 8; // Adjust this value to make the movement slower
 

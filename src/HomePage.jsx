@@ -11,17 +11,16 @@ export default function HomePage() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    // Initialize dots with random positions
     const initialDots = [...Array(200)].map(() => ({
       left: Math.random() * 100,
       top: Math.random() * 200,
-    }))
-    setDots(initialDots)
-  }, [])
+    }));
+    setDots(initialDots);
+  }, []);
 
   const handleMouseMove = useCallback((event) => {
-    setMousePosition({ x: event.clientX, y: event.clientY })
-  }, [])
+    setMousePosition({ x: event.clientX, y: event.clientY });
+  }, []);
 
 
     const displayLoadingScreen = () => {
@@ -77,21 +76,24 @@ export default function HomePage() {
   const slowFactor = 8; // Adjust this value to make the movement slower
 
   return (
-    <div 
-      className="container"
-      onMouseMove={handleMouseMove}
-    >
+    <div className="container" onMouseMove={handleMouseMove}>
       <div className="background">
         {dots.map((dot, i) => {
           const { left, top } = dot;
-          const centerX = 50; // Center of the screen in percentage
-          const centerY = 50; // Center of the screen in percentage
+          const centerX = 50;
+          const centerY = 50;
           const distanceX = left - centerX;
           const distanceY = top - centerY;
-          const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+          const distance = Math.sqrt(
+            distanceX * distanceX + distanceY * distanceY
+          );
 
-          const toTranslateX = (mousePosition.x / window.innerWidth - 0.5) * distance * slowFactor;
-          const toTranslateY = (mousePosition.y / window.innerHeight - 0.5) * distance * slowFactor;
+          const toTranslateX =
+            (mousePosition.x / window.innerWidth - 0.5) * distance * slowFactor;
+          const toTranslateY =
+            (mousePosition.y / window.innerHeight - 0.5) *
+            distance *
+            slowFactor;
 
           return (
             <div
@@ -109,9 +111,10 @@ export default function HomePage() {
       <div className="content">
         <h1 className="title">Welcome to Pod-Studious</h1>
         <p>An AI Article Reader for when you're on the go.</p>
-          <p>Simply paste the URL of the article you'd like to listen to 
-          and let Pod-Studious do the rest.
-      </p>
+        <p>
+          Simply paste the URL of the article you'd like to listen to and let
+          Pod-Studious do the rest.
+        </p>
         {/* <div className="input-container">
           <input
             type="url"
@@ -120,19 +123,17 @@ export default function HomePage() {
             onChange={(e) => setUrl(e.target.value)}
             className="input"
           /> */}
-          <div className="button-container">
-            <button onClick={handleReadArticle} className="button read">
-              Read the Article
-            </button>
-            <button 
-              onClick={handleGeneratePodcast} 
-              className="button podcast"
-            >
-              Generate a Podcast
-            </button>
-          </div>
+        <div className="button-container">
+          <button onClick={handleReadArticle} className="button read">
+            Read the Article"
+          </button>
+
+          <button onClick={handleGeneratePodcast} className="button podcast">
+            Generate a Podcast
+          </button>
         </div>
       </div>
+    </div>
     // </div>
-  )
+  );
 }
