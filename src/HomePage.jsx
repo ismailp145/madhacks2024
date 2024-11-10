@@ -23,7 +23,7 @@ export default function HomePage() {
 const [data, setData] = useState(null);
 const fetchData = async () => {
   try {
-    const response = await fetch('https://madhacks2024-api.vercel.app/scrape?url=India');
+    const response = await fetch('https://madhacks2024-api.vercel.app/scrape?subject=India');
     const d = await response.json();
     console.log('Data:', d);
     setData(d.data);
