@@ -38,7 +38,7 @@ export default function Conversation() {
       const response = await fetch(
         `https://madhacks2024-api.vercel.app/conv?n=${subject}`
       );
-      const d = response.json();
+      const d = await response.json();
       console.log("Data:", d);
       setPodcastContent(JSON.stringify(d.response) || "Content not available");
     } catch (error) {
