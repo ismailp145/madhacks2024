@@ -1,11 +1,13 @@
 'use client'
 
 import React, { useState, useCallback, useEffect } from 'react'
+import WebSock from './websocket.jsx'
 
 export default function HomePage() {
   const [url, setUrl] = useState('')
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [dots, setDots] = useState([])
+  const [docIDs, setDocIDs] = useState([])
 
   useEffect(() => {
     // Initialize dots with random positions
@@ -52,6 +54,14 @@ export default function HomePage() {
       console.error('Error fetching data:', error);
     }
   };
+
+  useEffect(() => {
+    if (data.docID) {
+      copyDoc = docIDs;
+      copyDoc.push(data.docID);
+      setDocIDs(copyDoc);
+    }
+  }, [data]);
 
   const slowFactor = 8; // Adjust this value to make the movement slower
 
@@ -108,6 +118,7 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+      <WebSock documentIds={docIDs}/>
     </div>
   )
 }
