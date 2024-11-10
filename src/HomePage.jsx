@@ -32,21 +32,17 @@ export default function HomePage() {
     fetchData(url);  // Pass the current URL state to fetchData
 
     console.log('Reading article:', url)
-    // displayLoadingScreen();
-    // navigate('/displayPage');
-    window.location.href = `/displayPage?title=Article Title&content=${
-      data || "No content found"
-    }`;
+      navigate('/displayArticle');
+    // window.location.href = `/displayPage?title=Article Title&content=${
+    //   data || "No content found"
+    // }`;
     
   }
 
   const handleGeneratePodcast = () => {
     fetchPrompt(url); // Pass the current URL state to fetchData
-
     console.log("Generating podcast for:", url);
-    // displayLoadingScreen();
-
-    // navigate('/displayPage'); 
+    navigate('/displayPodcast'); 
 
   }
 
@@ -111,15 +107,19 @@ export default function HomePage() {
         })}
       </div>
       <div className="content">
-        <h1 className="title">Welcome to Article Reader</h1>
-        <div className="input-container">
+        <h1 className="title">Welcome to Pod-Studious</h1>
+        <p>An AI Article Reader for when you're on the go.</p>
+          <p>Simply paste the URL of the article you'd like to listen to 
+          and let Pod-Studious do the rest.
+      </p>
+        {/* <div className="input-container">
           <input
             type="url"
             placeholder="Enter article URL"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             className="input"
-          />
+          /> */}
           <div className="button-container">
             <button onClick={handleReadArticle} className="button read">
               Read the Article
@@ -133,6 +133,6 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-    </div>
+    // </div>
   )
 }
