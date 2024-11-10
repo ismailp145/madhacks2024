@@ -35,7 +35,7 @@ export default function Conversation() {
   const fetchPrompt = async (subject) => {
     try {
       const response = await fetch(
-        `https://madhacks2024-api.vercel.app/conv?x=${subject}`
+        `https://madhacks2024-api.vercel.app/conv?n=${subject}`
       );
       const d = response.json();
       console.log("Data:", d);
