@@ -1,7 +1,13 @@
 /* Ensure the container fills the entire viewport */
+body, html {
+  overflow: hidden;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
 .container {
-  height: 110vh;
-  width: 110vw;
+  height: 100vh;
   background-color: black;
   display: flex;
   align-items: center;
@@ -19,11 +25,24 @@
 
 .dot {
   position: absolute;
-  background-color: white;
+  width: 8px;
+  height: 8px; 
+  background-color: white; 
   border-radius: 50%;
-  width: 4px;
-  height: 4px;
-  transition: transform 0.3s ease-out;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 
+              0 0 30px rgba(255, 255, 255, 0.8), 
+              0 0 45px rgba(255, 255, 255, 0.7), 
+              0 0 60px rgba(255, 255, 255, 0.6); 
+  animation: twinkle 2s infinite; 
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 2;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .content {
