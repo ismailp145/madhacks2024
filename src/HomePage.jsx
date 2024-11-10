@@ -1,35 +1,50 @@
 'use client'
 
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+// Custom Button Component for Navigation
+function NavigateButton({ text, to, onClick, className }) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    onClick();
+    navigate(to);
+  };
+
+  return (
+    <button onClick={handleClick} className={className}>
+      {text}
+    </button>
+  );
+}
 
 export default function HomePage() {
-  const [url, setUrl] = useState('')
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [dots, setDots] = useState([])
+  const [url, setUrl] = useState('');
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [dots, setDots] = useState([]);
+  const [data, setData] = useState(null);
 
   useEffect(() => {
-    // Initialize dots with random positions
     const initialDots = [...Array(200)].map(() => ({
       left: Math.random() * 100,
       top: Math.random() * 200,
-    }))
-    setDots(initialDots)
-  }, [])
+    }));
+    setDots(initialDots);
+  }, []);
 
   const handleMouseMove = useCallback((event) => {
-    setMousePosition({ x: event.clientX, y: event.clientY })
-  }, [])
+    setMousePosition({ x: event.clientX, y: event.clientY });
+  }, []);
 
-  const handleReadArticle = () => {
-    fetchData(url);  // Pass the current URL state to fetchData
-    console.log('Reading article:', url)
-  }
+  const handleReadArticle = async () => {
+    await fetchData(url);
+  };
 
   const handleGeneratePodcast = () => {
-    console.log('Generating podcast for:', url)
-  }
+    console.log('Generating podcast for:', url);
+  };
 
-  const [data, setData] = useState(null);
   const fetchData = async (subject) => {
     try {
       const response = await fetch(`https://madhacks2024-api.vercel.app/scrape?subject=${subject}`);
@@ -41,18 +56,15 @@ export default function HomePage() {
     }
   };
 
-  const slowFactor = 8; // Adjust this value to make the movement slower
+  const slowFactor = 8;
 
   return (
-    <div 
-      className="container"
-      onMouseMove={handleMouseMove}
-    >
+    <div className="container" onMouseMove={handleMouseMove}>
       <div className="background">
         {dots.map((dot, i) => {
           const { left, top } = dot;
-          const centerX = 50; // Center of the screen in percentage
-          const centerY = 50; // Center of the screen in percentage
+          const centerX = 50;
+          const centerY = 50;
           const distanceX = left - centerX;
           const distanceY = top - centerY;
           const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
@@ -84,18 +96,21 @@ export default function HomePage() {
             className="input"
           />
           <div className="button-container">
-            <button onClick={handleReadArticle} className="button read">
-              Read the Article
-            </button>
-            <button 
-              onClick={handleGeneratePodcast} 
+            <NavigateButton
+              text="Read the Article"
+              to="/Article"
+              onClick={handleReadArticle}
+              className="button read"
+            />
+            <NavigateButton
+              text="Generate a Podcast"
+              to="/Podcast"
+              onClick={handleGeneratePodcast}
               className="button podcast"
-            >
-              Generate a Podcast
-            </button>
+            />
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
