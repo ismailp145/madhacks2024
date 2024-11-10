@@ -1,0 +1,46 @@
+/* TextView.css */
+
+.text-view {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px; /* Set max width for the entire component */
+    margin: 0 auto;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .text-view .controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .text-view .button.font-control {
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+  }
+  
+  .text-view .button.font-control:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Scrollable content box with maximum height */
+  .text-view .content {
+    line-height: 1.5;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 4px;
+    overflow-y: auto; /* Enables vertical scrolling */
+    max-height: 300px; /* Sets the maximum height */
+    width: 100%;
+    box-sizing: border-box;
+  }
+  

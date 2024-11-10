@@ -2,13 +2,14 @@
 
 import React, { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import TextView from "./TextView";
 
 export default function DisplayArticle() {
   const [url, setUrl] = useState("");
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [dots, setDots] = useState([]);
   const navigate = useNavigate();
-  const [data, setData] = useState(null);
+  const [data, setData] = useState("Insert a Topic"); // Initial placeholder text
 
   useEffect(() => {
     const initialDots = [...Array(200)].map(() => ({
@@ -22,41 +23,38 @@ export default function DisplayArticle() {
     setMousePosition({ x: event.clientX, y: event.clientY });
   }, []);
 
-
-
   const handleSubmit = () => {
     fetchData(url);
     console.log("Reading Article:", url);
-
   };
 
-   const fetchData = async (subject) => {
-     try {
-       const response = await fetch(
-         `https://madhacks2024-api.vercel.app/scrape?subject=${subject}`
-       );
-       const d = await response.json();
-       console.log("Data:", d);
-       setData(d.data);
-     } catch (error) {
-       console.error("Error fetching data:", error);
-     }
-   };
+  const fetchData = async (subject) => {
+    try {
+      const response = await fetch(
+        `https://madhacks2024-api.vercel.app/scrape?subject=${subject}`
+      );
+      const d = await response.json();
+      console.log("Data:", d);
+      setData(JSON.stringify(d.data) || "Content not available");// Update data with fetched content
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setData("Error fetching content. Please try again.");
+    }
+  };
 
   const goBack = () => {
-    navigate("/");  
+    navigate("/");
   };
 
-
-  const slowFactor = 8; // Adjust this value to make the movement slower
+  const slowFactor = 8;
 
   return (
     <div className="container" onMouseMove={handleMouseMove}>
       <div className="background">
         {dots.map((dot, i) => {
           const { left, top } = dot;
-          const centerX = 50; // Center of the screen in percentage
-          const centerY = 50; // Center of the screen in percentage
+          const centerX = 50;
+          const centerY = 50;
           const distanceX = left - centerX;
           const distanceY = top - centerY;
           const distance = Math.sqrt(
@@ -84,8 +82,8 @@ export default function DisplayArticle() {
         })}
       </div>
       <div className="content">
-        <h1 className="title">Podcast Generator</h1>
-        <p>Input a topic and get a podcast generated</p>
+        <h1 className="title">Article Generator</h1>
+        <p>Input a topic and get a Article generated</p>
         <div className="input-container">
           <input
             type="url"
@@ -102,6 +100,11 @@ export default function DisplayArticle() {
               Go Back
             </button>
           </div>
+        </div>
+        
+        {/* TextView Component within a flexible container */}
+        <div className="text-view-container">
+          <TextView content={data} /> {/* Passing the fetched data to TextView */}
         </div>
       </div>
     </div>
