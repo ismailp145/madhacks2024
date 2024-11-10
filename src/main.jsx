@@ -6,6 +6,7 @@ import './HomePage.css'
 import HomePage from './HomePage.jsx'
 import DisplayPodcast from "./DisplayPodcast.jsx";
 import DisplayArticle from "./DisplayArticle.jsx";
+import Conversation from "./Conversation.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -14,6 +15,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/" element={<HomePage />} />
         <Route path="/displayArticle" element={<DisplayArticle />} />
         <Route path="/displayPodcast" element={<DisplayPodcast />} />
+        <Route path="/conversation" element={<Conversation />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>

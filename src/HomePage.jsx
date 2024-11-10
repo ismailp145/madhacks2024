@@ -36,6 +36,10 @@ export default function HomePage() {
     console.log("Generating podcast for:", url);
     navigate('/displayPodcast'); 
   }
+  const handleConversation = () => {
+    console.log("Starting conversation for:", url);
+    navigate('/conversation');
+  }
 
   const slowFactor = 8; // Adjust this value to make the movement slower
 
@@ -85,6 +89,9 @@ export default function HomePage() {
           </button>
           <button onClick={handleGeneratePodcast} className="button podcast">
             Generate a Podcast
+          </button>
+          <button onClick={handleConversation} className='button conversation'>
+            Interactive Conversation
           </button>
         </div>
       </div>

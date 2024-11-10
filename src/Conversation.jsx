@@ -3,13 +3,18 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import TextView from "./TextView";
+import SpeechSynthesisComponent from "./SpeechSynthesisComponent";
 
-export default function DisplayArticle() {
+export default function Conversation() {
   const [url, setUrl] = useState("");
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [dots, setDots] = useState([]);
   const navigate = useNavigate();
   const [data, setData] = useState("Insert a Topic"); // Initial placeholder text
+  const [podcastContent, setPodcastContent] = useState(
+    "Welcome to the Podcast!"
+  );
+
 
   useEffect(() => {
     const initialDots = [...Array(200)].map(() => ({
@@ -24,21 +29,19 @@ export default function DisplayArticle() {
   }, []);
 
   const handleSubmit = () => {
-    fetchData(url);
+    fetchPrompt(url);
     console.log("Reading Article:", url);
   };
-
-  const fetchData = async (subject) => {
+  const fetchPrompt = async (subject) => {
     try {
       const response = await fetch(
-        `https://madhacks2024-api.vercel.app/scrape?subject=${subject}`
+        `https://madhacks2024-api.vercel.app/conv?x=${subject}`
       );
       const d = await response.json();
       console.log("Data:", d);
-      setData(JSON.stringify(d.data) || "Content not available");// Update data with fetched content
+      setPodcastContent(JSON.stringify(d.response) || "Content not available");
     } catch (error) {
       console.error("Error fetching data:", error);
-      setData("Error fetching content. Please try again.");
     }
   };
 
@@ -82,8 +85,8 @@ export default function DisplayArticle() {
         })}
       </div>
       <div className="content">
-        <h1 className="title">Article Generator</h1>
-        <p>Input a URL and get an Article generated</p>
+        <h1 className="title">Converse AI</h1>
+        <p>Input a topic, and the have a conversation with the AI</p>
         <div className="input-container">
           <input
             type="url"
@@ -101,11 +104,10 @@ export default function DisplayArticle() {
             </button>
           </div>
         </div>
-        
+
         {/* TextView Component within a flexible container */}
         <div className="text-view-container">
-          <TextView content={data} /> {/* Passing the fetched data to TextView */}
-          
+          <SpeechSynthesisComponent text={podcastContent} />
         </div>
       </div>
     </div>
