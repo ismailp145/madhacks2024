@@ -56,7 +56,7 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    if (data.docID) {
+    if (data.docID != null) {
       copyDoc = docIDs;
       copyDoc.push(data.docID);
       setDocIDs(copyDoc);
