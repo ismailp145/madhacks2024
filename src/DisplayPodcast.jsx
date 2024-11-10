@@ -81,12 +81,12 @@ export default function DisplayPodcast() {
         })}
       </div>
       <div className="content">
-        <h1 className="title">Article Reader</h1>
-        <p>Input the URL to the Article and it will read it for you</p>
+        <h1 className="title">Podcast Generator</h1>
+        <p>Input a topic you'd like to learn more about</p>
         <div className="input-container">
           <input
             type="url"
-            placeholder="Enter article URL"
+            placeholder="Enter a topic"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             className="input"
