@@ -1,61 +1,104 @@
-import React, { useState, useEffect } from 'react';
-import useSpeechSynthesis from './useSpeechSynthesis';
+// SpeechSynthesisComponent.js
+import React, { useState, useEffect, useRef } from "react";
+import { FaPlay, FaPause } from "react-icons/fa";
+import "./SpeechSynthesisComponent.css";
 
 const SpeechSynthesisComponent = ({ text }) => {
-  const [selectedVoice, setSelectedVoice] = useState(null);
-  const [displayText, setDisplayText] = useState(text || "Welcome to the Article Reader!");
-  const { supported, speak, speaking, cancel, voices } = useSpeechSynthesis();
+  const [highlightIndex, setHighlightIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const words = text.split(" ");
+  const wordRefs = useRef([]);
 
-  useEffect(() => {
-    setDisplayText(text); // Update displayText when the prop text changes
-  }, [text]);
+  const createNewUtterance = () => {
+    const newUtterance = new SpeechSynthesisUtterance(text);
+    newUtterance.rate = 1;
 
-  const handleSpeak = () => {
-    if (displayText && selectedVoice) {
-      speak({ text: displayText, voice: selectedVoice });
+    // Handle word highlighting and progress tracking
+    newUtterance.onboundary = (event) => {
+      if (event.name === "word") {
+        setHighlightIndex((prevIndex) => {
+          const newIndex = prevIndex + 1;
+          if (wordRefs.current[newIndex]) {
+            wordRefs.current[newIndex].scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+            });
+          }
+          setProgress((newIndex / words.length) * 100);
+          return newIndex;
+        });
+      }
+    };
+
+    // Handle end of speech, reset state for replay
+    newUtterance.onend = () => {
+      setIsPlaying(false);
+      setProgress(100);
+      setHighlightIndex(0); // Reset highlighting
+    };
+
+    return newUtterance;
+  };
+
+  const handlePlayPause = () => {
+    if (!isPlaying) {
+      if (speechSynthesis.paused) {
+        // Resume if paused
+        speechSynthesis.resume();
+      } else {
+        // Start or restart the speech from beginning
+        if (progress === 100 || highlightIndex === 0) {
+          // Restart playback from the beginning
+          speechSynthesis.cancel(); // Cancel any ongoing speech
+          const newUtterance = createNewUtterance();
+          setProgress(0);
+          setHighlightIndex(0);
+          speechSynthesis.speak(newUtterance);
+        } else {
+          // Start the speech for the first time
+          const newUtterance = createNewUtterance();
+          speechSynthesis.speak(newUtterance);
+        }
+      }
     } else {
-      speak({ text: displayText });
+      // Pause speech if playing
+      speechSynthesis.pause();
     }
+    setIsPlaying(!isPlaying);
   };
 
   return (
-    <div className="speech-synthesis">
-      <h2>Text-to-Speech</h2>
-      {supported ? (
-        <>
-          <textarea
-            value={displayText}
-            onChange={(e) => setDisplayText(e.target.value)}
-            placeholder="Type something to speak"
-            rows="4"
-            cols="50"
-          />
-          <div>
-            <label htmlFor="voices">Select Voice: </label>
-            <select
-              id="voices"
-              onChange={(e) =>
-                setSelectedVoice(voices.find((voice) => voice.name === e.target.value))
-              }
+    <div>
+      <div style={{ maxHeight: "200px", overflowY: "auto" }}>
+        <p>
+          {words.map((word, index) => (
+            <span
+              key={index}
+              ref={(el) => (wordRefs.current[index] = el)}
+              style={{
+                backgroundColor: index === highlightIndex ? "yellow" : "transparent",
+                fontWeight: index === highlightIndex ? "bold" : "normal",
+                padding: "0 2px",
+              }}
             >
-              <option value="">Default Voice</option>
-              {voices.map((voice, index) => (
-                <option key={index} value={voice.name}>
-                  {voice.name} ({voice.lang})
-                </option>
-              ))}
-            </select>
-          </div>
-          <button onClick={handleSpeak} disabled={speaking} className="button speak">
-            {speaking ? "Speaking..." : "Speak"}
-          </button>
-          <button onClick={cancel} disabled={!speaking} className="button stop">
-            Stop
-          </button>
-        </>
-      ) : (
-        <p>Your browser does not support Speech Synthesis.</p>
-      )}
+              {word}{" "}
+            </span>
+          ))}
+        </p>
+      </div>
+
+      {/* Audio Progress Bar */}
+      <div className="progress-bar">
+        <div className="progress" style={{ width: `${progress}%` }}></div>
+      </div>
+
+      {/* Minimalistic Play and Pause Button */}
+      <div className="controls">
+        <button onClick={handlePlayPause} className="control-button">
+          {isPlaying ? <FaPause /> : <FaPlay />}
+        </button>
+      </div>
     </div>
   );
 };
