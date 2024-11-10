@@ -1,10 +1,11 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import SpeechSynthesisComponent from './SpeechSynthesisComponent';
 
 export default function Podcast() {
   const location = useLocation();
   const navigate = useNavigate();
-  const {podcastContent} = location.state || {};
+  const { podcastContent } = location.state || {};
 
   return (
     <div className="container">
@@ -20,6 +21,10 @@ export default function Podcast() {
             <p>Loading content...</p>
           )}
         </div>
+        
+        {/* Speech Synthesis Component with podcastContent as the initial text */}
+        <SpeechSynthesisComponent initialText={podcastContent || "Welcome to the Podcast!"} />
+        
         <button onClick={() => navigate('/')} className="button back">
           Back to Home
         </button>
