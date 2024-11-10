@@ -56,10 +56,14 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    if (data.docID != null) {
-      copyDoc = docIDs;
-      copyDoc.push(data.docID);
-      setDocIDs(copyDoc);
+    try{
+      if (data.docID) {
+        copyDoc = docIDs;
+        copyDoc.push(data.docID);
+        setDocIDs(copyDoc);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
   }, [data]);
 
