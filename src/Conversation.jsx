@@ -58,8 +58,9 @@ export default function Conversation() {
     }
   };
 
-  const stopListening = () => {
+  const stopListening = async () => {
     if (recognitionRef.current) {
+      await fetchPrompt(transcript);
       recognitionRef.current.stop();
       setIsListening(false);
       console.log("Stopped listening");
