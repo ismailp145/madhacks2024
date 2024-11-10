@@ -26,6 +26,7 @@ export default function HomePage() {
   }
 
   const handleGeneratePodcast = () => {
+    fetchPrompt(url);  // Pass the current
     console.log('Generating podcast for:', url)
   }
 
@@ -36,6 +37,17 @@ export default function HomePage() {
       const d = await response.json();
       console.log('Data:', d);
       setData(d.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const fetchPrompt = async (subject) => {
+    try {
+      const response = await fetch(`https://madhacks2024-api.vercel.app/prompt?x=${subject}`);
+      const d = await response.json();
+      console.log('Data:', d);
+      setData(d);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
