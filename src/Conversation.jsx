@@ -63,6 +63,10 @@ export default function Conversation() {
     fetchPrompt(transcript);
   }, [transcript]);
 
+  useEffect(() => {
+    setTranscript(" ");
+  }, [podcastContent]);
+
   const stopListening = async () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
@@ -148,7 +152,7 @@ export default function Conversation() {
         <div className="input-container">
           <input
             type="url"
-            placeholder="Enter article URL"
+            placeholder="Enter topic"
             value={url} // Display updated transcript or URL
             onChange={(e) => setUrl(e.target.value)}
             className="input"
