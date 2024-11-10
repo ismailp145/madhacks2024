@@ -63,10 +63,6 @@ export default function Conversation() {
     fetchPrompt(transcript);
   }, [transcript]);
 
-  useEffect(() => {
-    setTranscript(" ");
-  }, [podcastContent]);
-
   const stopListening = async () => {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
