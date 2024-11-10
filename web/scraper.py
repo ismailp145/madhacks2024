@@ -19,4 +19,3 @@ if response.status_code == 200:
     print(soup.get_text())
 else:
     print(f"Failed to retrieve the page. Status code: {response.status_code}")
-su

@@ -1,11 +1,14 @@
 'use client'
 
 import React, { useState, useCallback, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function HomePage() {
   const [url, setUrl] = useState('')
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [dots, setDots] = useState([])
+  const navigate = useNavigate();
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     // Initialize dots with random positions
@@ -20,16 +23,34 @@ export default function HomePage() {
     setMousePosition({ x: event.clientX, y: event.clientY })
   }, [])
 
+
+    const displayLoadingScreen = () => {
+      console.log("Displaying loading screen");
+    };
+
   const handleReadArticle = () => {
     fetchData(url);  // Pass the current URL state to fetchData
+
     console.log('Reading article:', url)
+    // displayLoadingScreen();
+    // navigate('/displayPage');
+    window.location.href = `/displayPage?title=Article Title&content=${
+      data || "No content found"
+    }`;
+    
   }
 
   const handleGeneratePodcast = () => {
-    console.log('Generating podcast for:', url)
+    fetchPrompt(url); // Pass the current URL state to fetchData
+
+    console.log("Generating podcast for:", url);
+    // displayLoadingScreen();
+
+    // navigate('/displayPage'); 
+
   }
 
-  const [data, setData] = useState(null);
+  
   const fetchData = async (subject) => {
     try {
       const response = await fetch(`https://madhacks2024-api.vercel.app/scrape?subject=${subject}`);
@@ -40,6 +61,22 @@ export default function HomePage() {
       console.error('Error fetching data:', error);
     }
   };
+
+  const fetchPrompt = async (subject) => {
+    try {
+      const response = await fetch(
+        `https://madhacks2024-api.vercel.app/prompt?x=${subject}`
+      );
+      const d = await response.json();
+      console.log("Data:", d);
+      setData(d);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+
+
 
   const slowFactor = 8; // Adjust this value to make the movement slower
 
